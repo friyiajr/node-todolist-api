@@ -113,8 +113,6 @@ app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
 });
 
-// {email, password}
-// Response with the email and password back
 app.post('/users/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
 
