@@ -285,25 +285,22 @@ describe('POST /users/login', () => {
       });
   });
 
-  // Invalid password
-  // 200 should be 400
-  // x-auth should not exist
-  // user tokens array as a length equal to 0
-
-  it('should reject invalid logins', () => {
+  it('should reject invalid logins', (done) => {
     request(app)
       .post('/users/login')
       .send({
         email: users[1].email,
         password: users[1].password + '1'
       })
-      .expect(200)
+      .expect(400)
       .expect((res) => {
         expect(res.headers['x-auth']).toNotExist();
-      }).end((err, res) => {
+      })
+      .end((err, res) => {
         if(err) {
-          return done();
+          return done(err);
         }
+
         User.findById(users[1]._id).then((user) => {
           expect(user.tokens.length).toBe(0);
           done();
